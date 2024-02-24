@@ -95,3 +95,45 @@ RUN set -eux; \
 
 # Install PHP extensions
 RUN docker-php-ext-install pdo_pgsql
+
+# Use an official PHP runtime as a parent image
+FROM php:8.0-fpm
+
+# Install dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    libpng-dev \
+    libjpeg62-turbo-dev \
+    libfreetype6-dev \
+    locales \
+    libzip-dev \
+    libonig-dev \
+    zip \
+    jpegoptim optipng pngquant gifsicle \
+    vim \
+    unzip \
+    git \
+    curl \
+    libicu-dev \
+    libxslt1-dev \
+    libssl-dev \
+    && docker-php-ext-install -j$(nproc) iconv mbstring xmlrpc \
+    && docker-php-ext-configure intl \
+    && docker-php-ext-install intl \
+    && docker-php-ext-enable mysqli pdo_mysql
+
+# Install Node.js and npm
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
+RUN apt-get install -y nodejs
+
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Set working directory
+WORKDIR /var/www/project
+
+# Copy existing application directory contents
+COPY . /var/www/project
+
+# Install application dependencies
+RUN composer install
