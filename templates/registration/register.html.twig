@@ -3,17 +3,24 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
+    <div class="mt-10">
+        <div class="w-full md:mt-0 sm:max-w-md xl:p-0 rounded ml-2 bg-blue-200">
+            <div class="bg-blue-500 rounded p-2">Register for the Task App</div>
+            <br>
 
-    {{ form_errors(registrationForm) }}
+            {{ form_errors(registrationForm) }}
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+            {{ form_start(registrationForm) }}
+            <span>{{ form_row(registrationForm.email) }}</span>
 
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+            {{ form_row(registrationForm.plainPassword, {
+                label: 'Password'
+            }) }}
+            {{ form_row(registrationForm.agreeTerms) }}
+            <div>
+                <button type="submit" class="btn bg-blue-500 rounded p-2">Register</button>
+            </div>
+            {{ form_end(registrationForm) }}
+        </div>
+    </div>
 {% endblock %}
